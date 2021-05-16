@@ -1,0 +1,35 @@
+version: '3'
+services:
+  db:
+    container_name: postgres
+    image: library/postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=oowlish
+      - POSTGRES_PASSWORD=oowlishyay
+      - POSTGRES_DB=oowlish
+    ports:
+      - 5432:5432
+
+  api:
+    build: ./back
+    container_name: django_server
+    restart: always
+    tty: true
+    ports:
+      - 8000:8000
+    links:
+      - db
+    depends_on:
+      - db
+    command: ["./start_server.sh", "db"]
+
+  front:
+    container_name: nginx
+    build: ./front
+    ports:
+      - 80:80
+    links:
+      - api
+    depends_on:
+      - api
