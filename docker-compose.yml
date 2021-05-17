@@ -13,6 +13,8 @@ services:
 
   api:
     build: ./back
+    env_file:
+      - ./back/oowlish-challenge/.env.prod
     container_name: django_server
     restart: always
     tty: true

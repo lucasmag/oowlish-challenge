@@ -1,13 +1,8 @@
 FROM python:3.8
 
 RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
-
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
-    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-
-RUN apt-get -y update - && \
-    apt-get -y install libpq-dev && \
-    apt-get -y install postgresql-client-11
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+RUN apt-get -y update - && apt-get -y install postgresql-client-11 libpq-dev
 
 COPY . /usr/src/app
 WORKDIR /usr/src/app
