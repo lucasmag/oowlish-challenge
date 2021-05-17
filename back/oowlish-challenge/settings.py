@@ -11,21 +11,26 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+root = environ.Path(__file__) - 3
 
+env = environ.Env()
+environ.Env.read_env()
+SITE_ROOT = root()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-v+e=lg0_$*s%yr-y=z5$)ljgy4q*(^cdg(nh*y095!x^kffe@n"
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env.bool('DEBUG', default=False)
+TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = [".localhost"]
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -80,19 +85,8 @@ WSGI_APPLICATION = "oowlish-challenge.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "oowlish",
-        "USER": "oowlish",
-        "PASSWORD": "oowlishyay",
-        "HOST": "db",
-        "PORT": "5432",
-        "TEST": {
-            "NAME": "postgres_test",
-        },
-    }
-}
+DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES["default"].update({"TEST": {"NAME": "postgres_test"}})
 
 TEST_RUNNER = "customerinfo.tests.conftest.PytestTestRunner"
 

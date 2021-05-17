@@ -1,9 +1,18 @@
 #!/bin/sh
 # start_server.sh
 
-host="$1"
+environment="$1"
+echo "$environment"
 
-until PGPASSWORD=oowlishyay psql -h "$host" -U "oowlish" -c '\q'; do
+if [ "$environment" = "production" ]; then
+  export ENV_PATH=".env.prod"
+  database_host="db"
+else
+  database_host="localhost"
+fi
+
+
+until PGPASSWORD=oowlishyay psql -h "$database_host" -U "oowlish" -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done

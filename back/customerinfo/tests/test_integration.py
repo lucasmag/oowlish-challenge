@@ -36,9 +36,7 @@ def test_get_customer_by_id(client_query, mock_customer_generator):
     customer_mock = mock_customer_generator(first_name="Michael")
     customer_mock.save()
 
-    response = client_query(
-        get_customer_by_id(customer_mock.id), op_name="getCustomerById"
-    )
+    response = client_query(get_customer_by_id(customer_mock.id))
 
     result = json.loads(response.content)
 

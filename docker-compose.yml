@@ -22,7 +22,7 @@ services:
       - db
     depends_on:
       - db
-    command: ["./start_server.sh", "db"]
+    command: ["./start_server.sh", "production"]
 
   front:
     container_name: nginx

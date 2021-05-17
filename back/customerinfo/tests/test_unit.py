@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from django.core.management import CommandError
 from customerinfo.management.commands.importcsv import (
@@ -23,7 +25,8 @@ def test_validate_path_to_csv_that_doesnt_exist():
 
 
 def test_import_customers_csv(client_query, monkeypatch_get_coordinates_from_address):
-    path = "customers_sample.csv"
+    current_folder = Path(__file__).resolve().parent
+    path = f"{current_folder}/customers_test.csv"
     import_csv_to_database(path)
 
     all_customers = Customer.objects.all()
