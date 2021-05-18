@@ -25,7 +25,7 @@ def test_get_all_customers(client_query, mock_customer_generator):
         title="Office Administrator"
     ).save()
 
-    response = client_query(get_all_customers(), op_name="getAllCustomers")
+    response = client_query(get_all_customers())
     result = json.loads(response.content)
 
     assert result["data"]["allCustomers"]
@@ -37,7 +37,6 @@ def test_get_customer_by_id(client_query, mock_customer_generator):
     customer_mock.save()
 
     response = client_query(get_customer_by_id(customer_mock.id))
-
     result = json.loads(response.content)
 
     assert result["data"]["customer"]
@@ -45,3 +44,13 @@ def test_get_customer_by_id(client_query, mock_customer_generator):
     customer_response = result["data"]["customer"]
     assert int(customer_response["id"]) == customer_mock.id
     assert customer_response["firstName"] == "Michael"
+
+
+def test_try_to_get_nonexistent_customer(client_query):
+    response = client_query(get_customer_by_id(9999))
+
+    result = json.loads(response.content)
+
+    assert not result["data"]["customer"]
+    assert "errors" in result
+    assert result["errors"][0]["message"] == "Customer matching query does not exist."

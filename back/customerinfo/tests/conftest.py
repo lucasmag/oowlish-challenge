@@ -1,4 +1,5 @@
-from random import randint, uniform
+from enum import Enum
+from random import uniform
 
 import pytest
 from graphene_django.utils.testing import graphql_query
@@ -35,34 +36,17 @@ def monkeypatch_get_coordinates_from_address(monkeypatch):
 
 
 @pytest.fixture(scope="function")
-def mock_customer():
-    customer = Customer()
-    customer.first_name = "Michael"
-    customer.last_name = "Scott"
-    customer.email = "worldsbestboss@mifflin.com"
-    customer.gender = "Male"
-    customer.company = "Dunder Mifflin"
-    customer.city = "Scranton, Pennsylvania"
-    customer.title = "Regional Manager"
-    customer.latitude = "41.4091379"
-    customer.longitude = "-75.6624229"
-    customer.save()
-
-    return customer
-
-
-@pytest.yield_fixture(scope="function")
 def mock_customer_generator():
-    def make_mock(
-        first_name="Michael",
-        last_name="Scott",
-        email="worldsbestboss@mifflin.com",
-        gender="Male",
-        company="Dunder Mifflin",
-        city="Scranton, Pennsylvania",
-        title="Regional Manager",
-        latitude="41.4091379",
-        longitude="-75.6624229",
+    def make_mock(  # Default customer mock
+            first_name="Michael",
+            last_name="Scott",
+            email="worldsbestboss@mifflin.com",
+            gender="Male",
+            company="Dunder Mifflin",
+            city="Scranton, Pennsylvania",
+            title="Regional Manager",
+            latitude="41.4091379",
+            longitude="-75.6624229",
     ):
         return Customer(
             first_name=first_name,
@@ -114,3 +98,31 @@ class PytestTestRunner:
 
         argv.extend(test_labels)
         return pytest.main(argv)
+
+
+class GoogleGeocodeAPIResponse(Enum):
+    REQUEST_DENIED_STATUS = {
+        "error_message": "You must enable Billing on the Google Cloud Project at https://console.cloud.google.com/project/_/billing/enable Learn more at https://developers.google.com/maps/gmp-get-started",
+        "results": [],
+        "status": "REQUEST_DENIED"
+    }
+
+    OK_STATUS = {
+        "results": [
+            {
+                "formatted_address": "Scranton, PA, USA",
+                "geometry": {
+                    "location": {
+                        "lat": 41.408969,
+                        "lng": -75.66241219999999
+                    },
+                }
+            }
+        ],
+        "status": "OK"
+    }
+
+    ZERO_RESULTS_STATUS = {
+        "results": [],
+        "status": "ZERO_RESULTS"
+    }

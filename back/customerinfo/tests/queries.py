@@ -1,6 +1,6 @@
 def get_all_customers() -> str:
     return """
-        query getAllCustomers{
+        query {
             allCustomers {
                 id
                 firstName
@@ -20,8 +20,8 @@ def get_all_customers() -> str:
 def get_customer_by_id(customer_id: int) -> str:
     return (
         """
-        query{
-            customer (id: %d){
+        query {
+            customer (id: %d) {
                 id
                 firstName
                 lastName
