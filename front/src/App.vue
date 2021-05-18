@@ -1,7 +1,12 @@
 <template>
   <div id="app">
-    <Header class="header"></Header>
-    <CustomerList/>
+    <div id="header">
+      <Header></Header>
+    </div>
+
+    <div id="body">
+      <CustomerList/>
+    </div>
   </div>
 </template>
 
@@ -40,19 +45,44 @@ export default {
   color: #2c3e50;
   margin: 0;
   padding: 0;
+  background-color: #F2EDE8;
+
+  font-size: 16px;
+  line-height: 1.42857143;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr) minmax(0, 0.3fr);
+  grid-template-rows: min-content minmax(0, 100%);
+  grid-template-areas:
+    "header header header"
+    ". body .";
 }
+
+#header {
+  grid-area: header;
+}
+
+#body {
+  grid-area: body;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+
+html {
+  height: 100%;
+  max-height: 100%;
+}
+
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #F2EDE8;
-}
-
-html, body {
   height: 100%;
+  max-height: 100%;
 }
 
-.header {
-  top: 0;
-}
 </style>

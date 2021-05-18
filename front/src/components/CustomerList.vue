@@ -1,6 +1,6 @@
 <template>
-  <div class="customer-list">
-    <div class="customers-box">
+  <div class="customers-box">
+    <div class="customer-list">
       <b-table class="tabled"
         hover
         sticky-header="60vh"
@@ -23,23 +23,21 @@
           align="center"
       ></b-pagination>
 
-      <b-modal id="customerInfoModal" hide-footer>
+      <b-modal
+          id="customerInfoModal"
+          header-bg-variant="dark"
+          header-text-variant="light"
+          centered
+          size="lg"
+          hide-footer>
         <template #modal-title>
           Customer Information
         </template>
 
         <div class="d-block text-center">
-          <h4>ID: {{this.customer.id}}</h4>
-          <h4>First Name: {{this.customer.firstName}}</h4>
-          <h4>Last Name: {{this.customer.lastName}}</h4>
-          <h4>Email: {{this.customer.email}}</h4>
-          <h4>Gender: {{this.customer.gender}}</h4>
-          <h4>Title: {{this.customer.title}}</h4>
-          <h4>City: {{this.customer.city}}</h4>
-          <h4>Latitude: {{this.customer.latitude}}</h4>
-          <h4>Logitude: {{this.customer.longitude}}</h4>
+          <CustomerInfo/>
         </div>
-        <b-button class="mt-3" block @click="hideCustomerInfoModal">Close</b-button>
+        <b-button class="mt-3" variant="warning" block @click="hideCustomerInfoModal">Close</b-button>
       </b-modal>
     </div>
   </div>
@@ -47,12 +45,14 @@
 
 <script>
 import gql from 'graphql-tag'
+import CustomerInfo from "@/components/CustomerInfo";
 
 export default {
   name: "CustomerList",
+  components: {CustomerInfo},
   data () {
     return {
-      selectedCustomerId: -1,
+      selectedCustomerId: 0,
       sortBy: 'id',
       sortDesc: false,
       allCustomers: [],
@@ -109,7 +109,7 @@ export default {
     `,
     customer: {
       query: gql`
-        query ($id: Int){
+        query getCustomerById($id: Int){
           customer(id: $id) {
             id
             firstName
@@ -129,6 +129,9 @@ export default {
           id: this.selectedCustomerId
         }
       },
+      skip () {
+        return !this.selectedCustomerId
+      },
     }
   }
 }
@@ -145,7 +148,7 @@ export default {
   height: 60vh;
 }
 
-.customer-list {
+.customers-box {
   width: 100%;
   height: 100%;
 
@@ -154,9 +157,15 @@ export default {
   justify-content: center;
 }
 
-.customers-box {
+.customer-list {
   border-radius: 35px;
-  min-width: 800px;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
+}
+
+#customerInfoModal {
+  width: 90%;
 }
 
 >>> .page-item.active .page-link{
