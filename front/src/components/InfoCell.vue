@@ -20,7 +20,7 @@ export default {
 
 <style scoped>
 .title {
-  font-size: 1em;
+  font-size: 0.9em;
   margin: 0;
   font-weight: bold;
   color: #242424;

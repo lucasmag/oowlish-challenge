@@ -1,8 +1,12 @@
 <template>
   <div class="customers-box">
     <div class="customer-list">
+      <div class="formFilter">
+        <h2 class="title">Customers</h2>
+        <b-form-input class="filter" v-model="filterCustomer" placeholder="Filter by any column"></b-form-input>
+      </div>
       <b-table class="tabled"
-        hover
+        hover :filter="filterCustomer"
         sticky-header="60vh"
         head-variant="dark"
         :items="allCustomers"
@@ -12,16 +16,29 @@
         :per-page="perPage"
         :current-page="currentPage"
         @row-clicked="showCustomerInfo"
+        @filtered="tableFiltered"
         responsive="sm"
         borderless
       ></b-table>
-      <b-pagination
-          pills
-          v-model="currentPage"
-          :total-rows="totalCustomers"
-          :per-page="perPage"
-          align="center"
-      ></b-pagination>
+
+      <div class="table-footer">
+        <b-form-radio-group
+            size="sm"
+            button-variant="dark"
+            class="qtt-per-page-options"
+            id="btn-radios-1"
+            v-model="perPage"
+            :options="perPageOptions"
+            name="radios-btn-default"
+            buttons
+        ></b-form-radio-group>
+        <b-pagination class="pagination-options"
+            v-model="currentPage"
+            :total-rows="totalCustomers"
+            :per-page="perPage"
+            align="center"
+        ></b-pagination>
+      </div>
 
       <b-modal
           id="customerInfoModal"
@@ -35,7 +52,7 @@
         </template>
 
         <div class="d-block text-center">
-          <CustomerInfo/>
+          <CustomerInfo v-bind:customer-info-data="this.customer"/>
         </div>
         <b-button class="mt-3" variant="warning" block @click="hideCustomerInfoModal">Close</b-button>
       </b-modal>
@@ -44,30 +61,22 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import CustomerInfo from "@/components/CustomerInfo";
+import {GET_ALL_CUSTOMERS, GET_CUSTOMER_BY_ID} from "@/queries";
 
 export default {
   name: "CustomerList",
   components: {CustomerInfo},
   data () {
     return {
-      selectedCustomerId: 0,
       sortBy: 'id',
+      filterCustomer: '',
       sortDesc: false,
       allCustomers: [],
-      customer: {
-        id: null,
-        firstName: '',
-        lastName: '',
-        gender: '',
-        email: '',
-        city: '',
-        title: '',
-        latitude: null,
-        longitude: null
-      },
-      perPage: 20,
+      totalCustomers: 0,
+      customer: {},
+      perPage: 10,
+      perPageOptions: [5, 10, 15, 20, 50],
       currentPage: 1,
       fields: [
         { key: 'id', sortable: true },
@@ -78,68 +87,75 @@ export default {
       ]
     }
   },
-  computed: {
-    totalCustomers() {
-      return this.allCustomers.length
-    }
+  mounted() {
+    this.totalCustomers = this.allCustomers.length
   },
   methods: {
-    showCustomerInfo(customer){
-      this.selectedCustomerId = customer.id
-      this.showCustomerInfoModal()
-    },
-    showCustomerInfoModal() {
+    showCustomerInfoModal(customer) {
+      this.customer = customer
       this.$bvModal.show('customerInfoModal')
     },
     hideCustomerInfoModal() {
       this.$bvModal.hide('customerInfoModal')
     },
+    showCustomerInfo(customer){
+      this.$apollo.query({
+        query: GET_CUSTOMER_BY_ID,
+        variables: { id: customer.id }
+      }).then((response) => {
+        this.showCustomerInfoModal(response.data.customer)
+      }).catch((response) => {
+        console.log("Error querying customer :(")
+        console.log(response)
+      })
+    },
+    tableFiltered(customers) {
+      this.totalCustomers = customers.length
+      this.currentPage = 1
+    }
   },
   apollo: {
-    allCustomers: gql`
-      query getAllCustomers{
-        allCustomers {
-          id
-          firstName
-          lastName
-          gender
-          city
-        }
-      }
-    `,
-    customer: {
-      query: gql`
-        query getCustomerById($id: Int){
-          customer(id: $id) {
-            id
-            firstName
-            lastName
-            email
-            gender
-            company
-            city
-            title
-            latitude
-            longitude
-          }
-        }
-      `,
-      variables() {
-        return {
-          id: this.selectedCustomerId
-        }
-      },
-      skip () {
-        return !this.selectedCustomerId
-      },
-    }
+    allCustomers: GET_ALL_CUSTOMERS
   }
 }
 </script>
 
 <style scoped>
+.title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8em;
+  margin: 0;
+}
+.formFilter {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.filter {
+  width: 30%;
+  background-color: #e0ded9;
+  border-style: none;
+}
+.qtt-per-page-options {
+  grid-area: perpage;
+}
+
+.pagination-options {
+  grid-area: pagination;
+  margin: 0;
+  background-color: #F2EDE8;
+}
+.table-footer {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr 0.3fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "perpage pagination ."
+}
 
 .tabled {
+  margin: 1rem 0;
   border-radius: 15px;
   background-color: #eae8e3;
   box-shadow: 5px 5px 15px -3px rgba(0, 0, 0, 0.1);
@@ -173,11 +189,13 @@ export default {
 }
 
 >>> .page-item:not(.active) .page-link:hover{
-  background-color: #ffe0b5;
+  background-color: #1f1f1f;
 }
 
 >>> .page-item .page-link{
   border-style: none;
+  background-color: #343a40;
+  color: #e0ded9;
 }
 
 >>> .page-link {

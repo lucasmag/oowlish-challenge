@@ -43,19 +43,10 @@ import InfoCell from "@/components/InfoCell";
 export default {
   name: "CustomerInfo",
   components: {InfoCell},
+  props: ["customerInfoData"],
   data () {
     return {
-      customer: {
-        id: 12,
-        firstName: 'Lucas',
-        lastName: 'Magalhaes',
-        gender: 'Female',
-        email: 'lucasmagjhjjhjhjhjalhaes@gmail.com',
-        city: 'Itapiponkn kkjj ca, CE',
-        title: 'Engenheiro da Computação dek mais testh ush uhu',
-        latitude: -12.2328321,
-        longitude: 30.32312312
-      }
+      customer: this.customerInfoData
     }
   }
 }
@@ -97,11 +88,11 @@ export default {
 #customer-info {
   grid-gap: 10px;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
   grid-template-areas:
-    "id first-name first-name first-name last-name last-name last-name gender"
-    "email email email email title title title title"
-    "city city city city latitude latitude longitude longitude"
+    "id first-name last-name gender"
+    "email email title title"
+    "city city latitude  longitude"
 }
 </style>
