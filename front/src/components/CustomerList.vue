@@ -7,7 +7,8 @@
       </div>
       <b-table class="tabled"
         hover :filter="filterCustomer"
-        sticky-header="60vh"
+        small
+        sticky-header="630px"
         head-variant="dark"
         :items="allCustomers"
         :fields="fields"
@@ -20,7 +21,11 @@
         borderless
       ></b-table>
 
-      <div class="table-footer">
+      <div class="no-data" v-if="noCustomers">
+        <span>No customers were found</span>
+      </div>
+
+      <div class="table-footer" v-if="enablePagination">
         <b-form-radio-group
             size="sm"
             button-variant="dark"
@@ -86,8 +91,13 @@ export default {
       ]
     }
   },
-  mounted() {
-    this.totalCustomers = this.allCustomers.length
+  computed: {
+    enablePagination: function () {
+      return this.totalCustomers > 10
+    },
+    noCustomers: function () {
+      return this.totalCustomers === 0
+    }
   },
   methods: {
     showCustomerInfoModal(customer) {
@@ -102,6 +112,8 @@ export default {
         query: GET_CUSTOMER_BY_ID,
         variables: { id: customer.id }
       }).then((response) => {
+        console.log(`Querying customer with id: ${customer.id}...`)
+        console.log(response)
         this.showCustomerInfoModal(response.data.customer)
       }).catch((response) => {
         console.log("Error querying customer :(")
@@ -114,7 +126,14 @@ export default {
     }
   },
   apollo: {
-    allCustomers: GET_ALL_CUSTOMERS
+    allCustomers: {
+      query: GET_ALL_CUSTOMERS,
+      result ({ data }) {
+        console.log(`Querying all customers...`)
+        console.log(data.allCustomers)
+        this.totalCustomers = data.allCustomers.length
+      }
+    }
   }
 }
 </script>
@@ -146,6 +165,7 @@ export default {
   background-color: #F2EDE8;
 }
 .table-footer {
+  margin-top: 1rem;
   display: grid;
   grid-template-columns: 0.3fr 1fr 0.3fr;
   grid-template-rows: auto;
@@ -154,12 +174,24 @@ export default {
 }
 
 .tabled {
-  margin: 1rem 0;
-  border-radius: 15px;
+  margin: 1rem 0 0 0;
   background-color: #eae8e3;
   box-shadow: 5px 5px 15px -3px rgba(0, 0, 0, 0.1);
 
   font-family: Montserrat-Regular, "sans-serif";
+}
+
+.no-data {
+  height: 270px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eae8e3;
+  color: rgba(34, 40, 40, 0.4);
+
+  font-family: "Montserrat-Bold", sans-serif;
+  font-size: 1.5em;
+  box-shadow: 5px 5px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .customers-box {
@@ -176,10 +208,6 @@ export default {
   width: -moz-available;
   width: -webkit-fill-available;
   width: fill-available;
-}
-
-#customerInfoModal {
-  width: 90%;
 }
 
 >>> .page-item.active .page-link{

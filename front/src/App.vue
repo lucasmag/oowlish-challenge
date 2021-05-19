@@ -37,6 +37,12 @@ export default {
   url(fonts/Montserrat/Montserrat-Regular.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: local("Montserrat"),
+  url(fonts/Montserrat/Montserrat-Bold.ttf) format("truetype");
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +51,6 @@ export default {
   color: #2c3e50;
   margin: 0;
   padding: 0;
-  background-color: #F2EDE8;
 
   font-size: 16px;
   line-height: 1.42857143;
@@ -83,6 +88,7 @@ body {
   padding: 0;
   height: 100%;
   max-height: 100%;
+  background-color: #F2EDE8;
 }
 
 </style>
