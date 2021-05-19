@@ -17,7 +17,6 @@
         :current-page="currentPage"
         @row-clicked="showCustomerInfo"
         @filtered="tableFiltered"
-        responsive="sm"
         borderless
       ></b-table>
 
@@ -76,7 +75,7 @@ export default {
       totalCustomers: 0,
       customer: {},
       perPage: 10,
-      perPageOptions: [5, 10, 15, 20, 50],
+      perPageOptions: [10, 20, 50, 100],
       currentPage: 1,
       fields: [
         { key: 'id', sortable: true },
@@ -161,7 +160,6 @@ export default {
   box-shadow: 5px 5px 15px -3px rgba(0, 0, 0, 0.1);
 
   font-family: Montserrat-Regular, "sans-serif";
-  height: 60vh;
 }
 
 .customers-box {
