@@ -136,7 +136,7 @@ coverage report -m
 ```
 
 ### Dependencies ###
-These were the main dependencies used in this project.
+These are the main dependencies used in this project.
 
 #### Backend
 + [Python 3.8](https://www.python.org/)
