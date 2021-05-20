@@ -53,15 +53,15 @@ export default {
   color: #2c3e50;
   margin: 0;
   padding: 0;
-
+  height: -webkit-fill-available;
+  height: available;
+  overflow-y: scroll;
   font-size: 16px;
   line-height: 1.42857143;
   width: 100%;
-  height: 100%;
-  max-height: 100%;
   display: grid;
   grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr) minmax(0, 0.3fr);
-  grid-template-rows: min-content minmax(0, 100%) min-content;
+  grid-template-rows: min-content minmax(0, -webkit-fill-available) min-content;
   grid-template-areas:
     "header header header"
     ". body ."
@@ -75,8 +75,6 @@ export default {
 #body {
   grid-area: body;
   width: 100%;
-  height: 100%;
-  max-height: 100%;
 }
 
 #footer {
@@ -94,8 +92,6 @@ html {
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  max-height: 100%;
   background-color: #F2EDE8;
 }
 
