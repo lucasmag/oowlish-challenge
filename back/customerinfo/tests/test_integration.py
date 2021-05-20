@@ -1,5 +1,5 @@
 import json
-from customerinfo.tests.queries import get_customer_by_id, get_all_customers
+from customerinfo.tests.utils.queries import get_customer_by_id, get_all_customers
 
 
 def test_get_all_customers(client_query, mock_customer_generator):

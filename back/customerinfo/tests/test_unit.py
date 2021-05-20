@@ -1,14 +1,13 @@
 from pathlib import Path
 
 import pytest
-from django.core.management import CommandError
+from django.core.management import CommandError, call_command
 from customerinfo.management.commands.importcsv import (
     validade_path_to_csv,
-    import_csv_to_database,
 )
 from customerinfo.models import Customer
-from customerinfo.tests.conftest import GoogleGeocodeAPIResponse
-from customerinfo.utils import check_status_code
+from customerinfo.tests.conftest import GoogleGeocodeAPIResponse, SCRANTON_ADDRESS_EXAMPLE
+from customerinfo.utils import check_status_code, Coordinates, Gender, get_coordinates_from_address
 
 
 def test_validate_path_to_csv_with_no_path():
@@ -29,7 +28,7 @@ def test_validate_path_to_csv_that_doesnt_exist():
 def test_import_customers_csv(client_query, monkeypatch_get_coordinates_from_address):
     current_folder = Path(__file__).resolve().parent
     path = f"{current_folder}/customers_test.csv"
-    import_csv_to_database(path)
+    call_command("importcsv", path)
 
     all_customers = Customer.objects.all()
 
@@ -64,3 +63,23 @@ def test_call_geocode_api_error_status(caplog):
         assert record.levelname == "WARNING"
 
     assert GoogleGeocodeAPIResponse.REQUEST_DENIED_STATUS.value["error_message"] in caplog.text
+
+
+def test_get_coordinates_from_address(monkeypatch_request):
+    address_test = SCRANTON_ADDRESS_EXAMPLE
+
+    coordinates = get_coordinates_from_address(address_test)
+    scranton_lat_long = GoogleGeocodeAPIResponse.OK_STATUS.value["results"][0]["geometry"]["location"]
+    scranton_coordinates = Coordinates(scranton_lat_long["lat"], scranton_lat_long["lng"])
+    assert coordinates == scranton_coordinates
+
+
+def test_get_coordinates_from_address_with_nonexistent_address(monkeypatch_request):
+    address_test = "This address doesn't exist."
+
+    coordinates = get_coordinates_from_address(address_test)
+    assert coordinates == Coordinates(None, None)
+
+
+def test_gender_choices():
+    assert Gender.choices() == (("MALE", "male"), ("FEMALE", "female"))

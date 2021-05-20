@@ -8,6 +8,9 @@ from customerinfo.models import Customer
 from customerinfo.utils import Coordinates
 
 
+SCRANTON_ADDRESS_EXAMPLE = "Scranton, Pennsylvania"
+
+
 @pytest.fixture(autouse=True)
 def enable_db_access_for_all_tests(db):
     pass
@@ -33,6 +36,25 @@ def monkeypatch_get_coordinates_from_address(monkeypatch):
         "customerinfo.management.commands.importcsv.get_coordinates_from_address",
         fake_get_coordinates_from_address,
     )
+
+
+@pytest.fixture(scope="function")
+def monkeypatch_request(monkeypatch):
+    import requests
+
+    def post(*args, **kwargs):
+        class Request:
+            address = kwargs["params"]["address"]
+
+            def json(self):
+                if self.address == SCRANTON_ADDRESS_EXAMPLE:
+                    return GoogleGeocodeAPIResponse.OK_STATUS.value
+
+                return GoogleGeocodeAPIResponse.ZERO_RESULTS_STATUS.value
+
+        return Request()
+
+    monkeypatch.setattr(requests, "post", post)
 
 
 @pytest.fixture(scope="function")
@@ -114,7 +136,7 @@ class GoogleGeocodeAPIResponse(Enum):
                 "geometry": {
                     "location": {
                         "lat": 41.408969,
-                        "lng": -75.66241219999999
+                        "lng": -75.6624121
                     },
                 }
             }
