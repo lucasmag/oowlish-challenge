@@ -47,12 +47,43 @@ To stop the application and delete network/containers just run from the */oowlis
 $ docker-compose down
 ```
 ## Usage ###
-The application revolves around two calls to the API: one to list all customers and the other to search for a specific customer by id.
-The main screen shows a table with the list of all employees, which were called through the first GraphQL query: `allCustomers`, which returns all customers present at the database, with the following fields: *i*d, *firstName*, *lastName*, *gender* and *city*.
+The application revolves around two API calls: one to list all customers, and the other to search for a specific customer by its id.
+
+The main screen shows a table with the list of all customers, which were called through the first GraphQL query: `allCustomers`, that returns all customers present at the database, containing the following fields: *id*, *firstName*, *lastName*, *gender* and *city*.
+
 [![Customer list](https://github.com/lucasmag/oowlish-challenge/blob/master/front/src/assets/customer-list.png)](https://github.com/lucasmag/oowlish-challenge)
 
-When clicking on a specific customer, a modal is opened with the complete information of the customer. This information was queried through the GraphQL query `customer (id: str)`, returning all fields.
+When clicking on a specific customer, a modal is opened with the complete information of the customer. 
+This information is queried through the GraphQL query `customer(id: Int)`, returning all fields.
+
 [![Customer info](https://github.com/lucasmag/oowlish-challenge/blob/master/front/src/assets/customer-info.png)](https://github.com/lucasmag/oowlish-challenge)
+
+The Django API also provides and GraphiQL endpoint to test the available queries for this application as well as see the docs for this schema. Just access in the browser:
+```
+http://localhost:8000/graphql/graphiql/
+```
+
+Write the query and execute(Ctrl + Enter), for example:
+```gql
+query{
+    customer(id: 1){
+        id
+        firstName
+    }
+}
+```
+This query should return something like this.
+```gql
+{
+  "data": {
+    "customer": {
+      "id": "1",
+      "firstName": "Laura"
+    }
+  }
+}
+```
+The docs are available in the top right corner of the page.
 
 ## How does it work? ###
 As previously mentioned, when running Docker Compose, three containers are created: one for the frontend (Vue.js), one for the backend (Django) and the last one for the database (PostgreSQL).
@@ -61,13 +92,13 @@ The frontend and database steps for letting them in a ready-to-use state are qui
 For the database, the container is created running a `PostgreSQL` image containing one database with name and user `oowlish` and password `oowlishyay`. This container is available on port 5432.
 
 For the backend, there are a few more steps. These steps are described below:
-1. The entrypoint is the `start-server.sh` file. Initially, this script verify if there is any Postgres service running on port 5432 with the previously described configurations. If database is not yet ready to use, this script will try to reconnect every 1 second, until the database is ready to use.
+1. The entrypoint is the `start-server.sh` file. Initially, this script verify if there is any `Postgres` service running on port 5432 with the previously described configurations. If database is not yet ready to use, this script will try to reconnect every 1 second, until the database is ready to use.
 2. Build and run migrations
-3. A django management command to import the customers.csv file into database is executed. Where *customers.csv* is the path to the csv file we want to import.
+3. A django management command to import the *customers.csv* file into database is executed. Where *customers.csv* is the path to the csv file we want to import.
     ```python
     python manage.py importcsv customers.csv
     ```
-4. The server is run on port 8000
+4. The server runs on port 8000
 
 ## Tests ##
 ### Pytest ###
@@ -83,7 +114,7 @@ Run all tests with the following command:
 $ pytest
 ```
 
-A runner adapter was also made that allows us to run the tests using Django's `test` command:
+Was also made a runner adapter that allows us to run the tests using Django's `test` command:
 ```python
 $ python ./manage.py test
 ```
