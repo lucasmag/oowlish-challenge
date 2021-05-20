@@ -1,4 +1,4 @@
-# oowlish-challenge-front
+# oowlish-challenge/front
 
 ## Project setup
 ```

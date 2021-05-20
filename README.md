@@ -46,6 +46,11 @@ To stop the application and delete network/containers just run from the */oowlis
 ```bash
 $ docker-compose down
 ```
+
+---
+
+> Note: To set up for development you can access each module (back/front) separately and follow the respective README.md instructions of each one.
+
 ## Usage ###
 The application revolves around two API calls: one to list all customers, and the other to search for a specific customer by its id.
 
@@ -89,7 +94,7 @@ The docs are available in the top right corner of the page.
 As previously mentioned, when running Docker Compose, three containers are created: one for the frontend (Vue.js), one for the backend (Django) and the last one for the database (PostgreSQL).
 
 The frontend and database steps for letting them in a ready-to-use state are quite simple. For front, the build is done by `npm` and then served by the HTTP `Nginx` server on port 80.
-For the database, the container is created running a `PostgreSQL` image containing one database with name and user `oowlish` and password `oowlishyay`. This container is available on port 5432.
+For the database, the container is created running a `PostgreSQL` image with the following credentials: POSTGRES_USER=oowlish and POSTGRES_PASSWORD=oowlishyay. This container is available on port 5432.
 
 For the backend, there are a few more steps. These steps are described below:
 1. The entrypoint is the `start-server.sh` file. Initially, this script verify if there is any `Postgres` service running on port 5432 with the previously described configurations. If database is not yet ready to use, this script will try to reconnect every 1 second, until the database is ready to use.
