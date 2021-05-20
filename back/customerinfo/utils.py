@@ -32,7 +32,7 @@ class Gender(ChoiceEnum):
 @cache_memoize(10 * 60)
 def get_coordinates_from_address(address) -> Coordinates:
     log.info(f"Getting coordinates for {address}")
-    params = {"address": address, "key": env.str('MAPS_GEOCODE_API_KEY')}
+    params = {"address": address, "key": env.str("MAPS_GEOCODE_API_KEY")}
     response = requests.post(MAPS_GEOCODE_API, params=params)
     response_json = response.json()
 

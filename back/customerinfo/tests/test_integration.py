@@ -7,14 +7,14 @@ def test_get_all_customers(client_query, mock_customer_generator):
         first_name="Dwight",
         last_name="Schrute",
         email="schrutefarms@tripadvisor.com",
-        title="Assistant (to the) Regional Manager"
+        title="Assistant (to the) Regional Manager",
     ).save()
 
     mock_customer_generator(
         first_name="Jim",
         last_name="Halpert",
         email="bigtuna@athlead.com",
-        title="President of New Acquisitions"
+        title="President of New Acquisitions",
     ).save()
 
     mock_customer_generator(
@@ -22,7 +22,7 @@ def test_get_all_customers(client_query, mock_customer_generator):
         last_name="Beesly",
         email="pamcasso@mifflin.com",
         gender="Female",
-        title="Office Administrator"
+        title="Office Administrator",
     ).save()
 
     response = client_query(get_all_customers())

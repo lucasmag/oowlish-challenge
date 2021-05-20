@@ -60,15 +60,15 @@ def monkeypatch_request(monkeypatch):
 @pytest.fixture(scope="function")
 def mock_customer_generator():
     def make_mock(  # Default customer mock
-            first_name="Michael",
-            last_name="Scott",
-            email="worldsbestboss@mifflin.com",
-            gender="Male",
-            company="Dunder Mifflin",
-            city="Scranton, Pennsylvania",
-            title="Regional Manager",
-            latitude="41.4091379",
-            longitude="-75.6624229",
+        first_name="Michael",
+        last_name="Scott",
+        email="worldsbestboss@mifflin.com",
+        gender="Male",
+        company="Dunder Mifflin",
+        city="Scranton, Pennsylvania",
+        title="Regional Manager",
+        latitude="41.4091379",
+        longitude="-75.6624229",
     ):
         return Customer(
             first_name=first_name,
@@ -126,7 +126,7 @@ class GoogleGeocodeAPIResponse(Enum):
     REQUEST_DENIED_STATUS = {
         "error_message": "You must enable Billing on the Google Cloud Project at https://console.cloud.google.com/project/_/billing/enable Learn more at https://developers.google.com/maps/gmp-get-started",
         "results": [],
-        "status": "REQUEST_DENIED"
+        "status": "REQUEST_DENIED",
     }
 
     OK_STATUS = {
@@ -134,17 +134,11 @@ class GoogleGeocodeAPIResponse(Enum):
             {
                 "formatted_address": "Scranton, PA, USA",
                 "geometry": {
-                    "location": {
-                        "lat": 41.408969,
-                        "lng": -75.6624121
-                    },
-                }
+                    "location": {"lat": 41.408969, "lng": -75.6624121},
+                },
             }
         ],
-        "status": "OK"
+        "status": "OK",
     }
 
-    ZERO_RESULTS_STATUS = {
-        "results": [],
-        "status": "ZERO_RESULTS"
-    }
+    ZERO_RESULTS_STATUS = {"results": [], "status": "ZERO_RESULTS"}
