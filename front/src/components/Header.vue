@@ -18,7 +18,7 @@ name: "Header"
   width: 100%;
   height: 100px;
   margin: 0;
-  padding: 0 40px;
+  padding: 0 50px;
 
   display: flex;
   align-items: center;

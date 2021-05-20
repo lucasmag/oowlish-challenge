@@ -1,8 +1,9 @@
 <template>
-<div>
-  <h4 class="title">{{this.title}}</h4>
-  <p class="value">{{this.value}}</p>
-</div>
+  <div>
+    <h4 class="title">{{this.title}}</h4>
+    <p class="value" v-if="this.value">{{this.value}}</p>
+    <p class="value-not-filled" v-if="!this.value">Value not filled</p>
+  </div>
 </template>
 
 <script>
@@ -26,9 +27,14 @@ export default {
   color: #242424;
 }
 
-.value {
+.value .value-not-filled{
   margin: 0;
   font-size: 1.2em;
   overflow-wrap: break-word;
+}
+
+.value-not-filled {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.4);
 }
 </style>

@@ -7,6 +7,8 @@
     <div id="body">
       <CustomerList/>
     </div>
+
+    <div id="footer"/>
   </div>
 </template>
 
@@ -59,10 +61,11 @@ export default {
   max-height: 100%;
   display: grid;
   grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr) minmax(0, 0.3fr);
-  grid-template-rows: min-content minmax(0, 100%);
+  grid-template-rows: min-content minmax(0, 100%) min-content;
   grid-template-areas:
     "header header header"
-    ". body .";
+    ". body ."
+    "footer footer footer"
 }
 
 #header {
@@ -74,6 +77,11 @@ export default {
   width: 100%;
   height: 100%;
   max-height: 100%;
+}
+
+#footer {
+  grid-area: footer;
+  height: 100px;
 }
 
 
