@@ -57,8 +57,6 @@ export default {
   font-size: 16px;
   line-height: 1.42857143;
   width: 100%;
-  height: 100%;
-  max-height: 100%;
   display: grid;
   grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr) minmax(0, 0.3fr);
   grid-template-rows: min-content minmax(0, 100%) min-content;
