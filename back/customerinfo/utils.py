@@ -7,6 +7,7 @@ from cache_memoize import cache_memoize
 from environ import Env
 
 env = Env()
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 MAPS_GEOCODE_API = "https://maps.googleapis.com/maps/api/geocode/json"
