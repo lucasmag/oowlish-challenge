@@ -35,7 +35,7 @@ def test_validate_path_to_csv_that_doesnt_exist():
 
 def test_import_customers_csv(client_query, monkeypatch_get_coordinates_from_address):
     current_folder = Path(__file__).resolve().parent
-    path = f"{current_folder}/customers_test.csv"
+    path = f"{current_folder}/utils/customers_test.csv"
     call_command("importcsv", path)
 
     all_customers = Customer.objects.all()
