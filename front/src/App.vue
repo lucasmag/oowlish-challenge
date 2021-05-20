@@ -53,8 +53,8 @@ export default {
   color: #2c3e50;
   margin: 0;
   padding: 0;
-  height: -webkit-fill-available;
-  height: available;
+  height: 100%;
+  max-height: 100%;
   overflow-y: scroll;
   font-size: 16px;
   line-height: 1.42857143;
@@ -93,6 +93,8 @@ body {
   margin: 0;
   padding: 0;
   background-color: #F2EDE8;
+  height: -webkit-fill-available;
+  height: available;
 }
 
 </style>
