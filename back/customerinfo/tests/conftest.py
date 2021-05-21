@@ -4,11 +4,12 @@ from random import uniform
 import pytest
 from graphene_django.utils.testing import graphql_query
 
-from customerinfo.models import Customer
+from customerinfo.management.commands.importcsv import get_or_create_city
+from customerinfo.models import Customer, City
 from customerinfo.utils import Coordinates
 
 
-SCRANTON_ADDRESS_EXAMPLE = "Scranton, Pennsylvania"
+CITY_EXAMPLE = "Scranton, Pennsylvania"
 
 
 @pytest.fixture(autouse=True)
@@ -47,7 +48,7 @@ def monkeypatch_request(monkeypatch):
             address = kwargs["params"]["address"]
 
             def json(self):
-                if self.address == SCRANTON_ADDRESS_EXAMPLE:
+                if self.address == CITY_EXAMPLE:
                     return GoogleGeocodeAPIResponse.OK_STATUS.value
 
                 return GoogleGeocodeAPIResponse.ZERO_RESULTS_STATUS.value
@@ -65,21 +66,22 @@ def mock_customer_generator():
         email="worldsbestboss@mifflin.com",
         gender="Male",
         company="Dunder Mifflin",
-        city="Scranton, Pennsylvania",
+        city: City = None,
         title="Regional Manager",
-        latitude="41.4091379",
-        longitude="-75.6624229",
     ):
+        new_city = None
+
+        if not city:
+            new_city = get_or_create_city("CityTest")
+
         return Customer(
             first_name=first_name,
             last_name=last_name,
             email=email,
             gender=gender,
             company=company,
-            city=city,
+            city=city if city else new_city,
             title=title,
-            latitude=latitude,
-            longitude=longitude,
         )
 
     yield make_mock

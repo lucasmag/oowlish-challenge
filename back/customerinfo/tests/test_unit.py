@@ -8,7 +8,7 @@ from customerinfo.management.commands.importcsv import (
 from customerinfo.models import Customer
 from customerinfo.tests.conftest import (
     GoogleGeocodeAPIResponse,
-    SCRANTON_ADDRESS_EXAMPLE,
+    CITY_EXAMPLE,
 )
 from customerinfo.utils import (
     check_status_code,
@@ -81,7 +81,7 @@ def test_call_geocode_api_error_status(caplog):
 
 
 def test_get_coordinates_from_address(monkeypatch_request):
-    address_test = SCRANTON_ADDRESS_EXAMPLE
+    address_test = CITY_EXAMPLE
 
     coordinates = get_coordinates_from_address(address_test)
     scranton_lat_long = GoogleGeocodeAPIResponse.OK_STATUS.value["results"][0][

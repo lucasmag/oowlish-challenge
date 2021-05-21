@@ -8,10 +8,12 @@ def get_all_customers() -> str:
                 email
                 gender
                 company
-                city
                 title
-                latitude
-                longitude
+                city {
+                    name
+                    latitude
+                    longitude
+                }
             }
         }
     """
@@ -28,10 +30,12 @@ def get_customer_by_id(customer_id: int) -> str:
                 email
                 gender
                 company
-                city
                 title
-                latitude
-                longitude
+                city {
+                    name
+                    latitude
+                    longitude
+                }
             }
         }
         """
