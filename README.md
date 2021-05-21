@@ -63,7 +63,7 @@ This information is queried through the GraphQL query `customer(id: Int)`, retur
 
 [![Customer info](https://github.com/lucasmag/oowlish-challenge/blob/master/front/src/assets/customer-info.png)](https://github.com/lucasmag/oowlish-challenge)
 
-The Django API also provides and GraphiQL endpoint to test the available queries for this application as well as see the docs for this schema. Just access in the browser:
+The Django API also provides a GraphiQL endpoint to test the available queries for this application as well as see the docs for this schema. Just access in the browser:
 ```
 http://localhost:8000/graphql/graphiql/
 ```
