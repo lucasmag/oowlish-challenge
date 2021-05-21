@@ -17,7 +17,7 @@ Once docker and docker compose have been installed, clone this repo:
 ```bash
 git clone https://github.com/lucasmag/oowlish-challenge
 ```
-By default, this process will expose ports 5432, 8000 and 60 for PostgreSQL database, Gunicorn and Nginx servers, respectively, so make sure that there is no process running on any of these ports, or change front/back Dockerfiles if necessary. 
+By default, this process will expose ports 5432, 8000 and 60 for PostgreSQL database, Django and Nginx servers, respectively, so make sure that there is no process running on any of these ports, or change front/back Dockerfiles if necessary. 
 
 When ready, simply use Docker Compose to build the images and run containers.
 
