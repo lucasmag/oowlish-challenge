@@ -5,7 +5,7 @@ from django.core.management import CommandError, call_command
 from customerinfo.management.commands.importcsv import (
     validade_path_to_csv,
 )
-from customerinfo.models import Customer
+from customerinfo.models import Customer, Gender
 from customerinfo.tests.conftest import (
     GoogleGeocodeAPIResponse,
     CITY_EXAMPLE,
@@ -13,7 +13,6 @@ from customerinfo.tests.conftest import (
 from customerinfo.utils import (
     check_status_code,
     Coordinates,
-    Gender,
     get_coordinates_from_address,
 )
 

@@ -34,7 +34,7 @@ def monkeypatch_get_coordinates_from_address(monkeypatch):
         return Coordinates(latitude, longitude)
 
     monkeypatch.setattr(
-        "customerinfo.management.commands.importcsv.get_coordinates_from_address",
+        "customerinfo.utils.get_coordinates_from_address",
         fake_get_coordinates_from_address,
     )
 

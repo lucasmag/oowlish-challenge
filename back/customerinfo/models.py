@@ -1,6 +1,17 @@
+from enum import Enum
+
 from django.db import models
 
-from customerinfo.utils import Gender
+
+class ChoiceEnum(Enum):
+    @classmethod
+    def choices(cls):
+        return tuple((x.name, x.value) for x in cls)
+
+
+class Gender(ChoiceEnum):
+    MALE = "male"
+    FEMALE = "female"
 
 
 class City(models.Model):

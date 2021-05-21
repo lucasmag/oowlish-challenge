@@ -1,19 +1,9 @@
 import csv
 from django.core.management import BaseCommand, CommandError
-from customerinfo.models import Customer, City
+from customerinfo.models import Customer
 import os
-from customerinfo.utils import get_coordinates_from_address, Coordinates
 
-
-def get_or_create_city(city_name):
-    city = City.objects.filter(name=city_name).first()
-
-    if not city:
-        coordinates: Coordinates = get_coordinates_from_address(city_name)
-        city = City(name=city_name, latitude=coordinates.latitude, longitude=coordinates.longitude)
-        city.save()
-
-    return city
+from customerinfo.utils import get_or_create_city
 
 
 def validade_path_to_csv(csv_path: str) -> None:

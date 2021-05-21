@@ -1,10 +1,11 @@
 import logging
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional, Dict
 import requests
 from cache_memoize import cache_memoize
 from environ import Env
+
+from customerinfo.models import City
 
 env = Env()
 logging.basicConfig(level=logging.INFO)
@@ -17,17 +18,6 @@ MAPS_GEOCODE_API = "https://maps.googleapis.com/maps/api/geocode/json"
 class Coordinates:
     latitude: Optional[float]
     longitude: Optional[float]
-
-
-class ChoiceEnum(Enum):
-    @classmethod
-    def choices(cls):
-        return tuple((x.name, x.value) for x in cls)
-
-
-class Gender(ChoiceEnum):
-    MALE = "male"
-    FEMALE = "female"
 
 
 @cache_memoize(10 * 60)
@@ -61,3 +51,14 @@ def check_status_code(address: str, response: Dict) -> bool:
             log.warning(response["error_message"])
 
     return False
+
+
+def get_or_create_city(city_name):
+    city = City.objects.filter(name=city_name).first()
+
+    if not city:
+        coordinates: Coordinates = get_coordinates_from_address(city_name)
+        city = City(name=city_name, latitude=coordinates.latitude, longitude=coordinates.longitude)
+        city.save()
+
+    return city
