@@ -1,6 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
-from customerinfo.models import Customer
+
+from customerinfo.models import Customer, City
 
 
 class CustomerType(DjangoObjectType):
@@ -8,6 +9,11 @@ class CustomerType(DjangoObjectType):
         model = Customer
         fields = "__all__"
         convert_choices_to_enum = False
+
+
+class City(DjangoObjectType):
+    class Meta:
+        model = City
 
 
 class Query(graphene.ObjectType):
