@@ -15,12 +15,8 @@ class Query(graphene.ObjectType):
     all_customers = graphene.List(CustomerType)
 
     def resolve_customer(self, info, **kwargs):
-        id = kwargs.get("id")
-
-        if id is not None:
-            return Customer.objects.get(pk=id)
-
-        return None
+        id = kwargs["id"]
+        return Customer.objects.get(pk=id)
 
     def resolve_all_customers(self, info, **kwargs):
         return Customer.objects.all()
