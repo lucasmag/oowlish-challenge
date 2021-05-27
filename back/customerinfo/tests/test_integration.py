@@ -2,35 +2,12 @@ import json
 
 from django.urls import reverse
 
+from customerinfo.tests.conftest import populate_db_with_customers
 from customerinfo.tests.utils.queries import get_customer_by_id, get_all_customers
 
 
-def populate_db_with_mocks(mock_customer_generator):
-    mock_customer_generator(
-        first_name="Dwight",
-        last_name="Schrute",
-        email="schrutefarms@tripadvisor.com",
-        title="Assistant (to the) Regional Manager",
-    ).save()
-
-    mock_customer_generator(
-        first_name="Jim",
-        last_name="Halpert",
-        email="bigtuna@athlead.com",
-        title="President of New Acquisitions",
-    ).save()
-
-    mock_customer_generator(
-        first_name="Pam",
-        last_name="Beesly",
-        email="pamcasso@mifflin.com",
-        gender="Female",
-        title="Office Administrator",
-    ).save()
-
-
 def test_get_all_customers_graphql_api(client_query, mock_customer_generator):
-    populate_db_with_mocks(mock_customer_generator)
+    populate_db_with_customers(quantity=3)
 
     response = client_query(get_all_customers())
     result = json.loads(response.content)
@@ -64,14 +41,14 @@ def test_try_to_get_nonexistent_customer_graphql_api(client_query):
 
 
 def test_get_all_customers_rest_api(client, client_query, mock_customer_generator):
-    populate_db_with_mocks(mock_customer_generator)
+    populate_db_with_customers(quantity=2)
 
     url = reverse('customers')
     response = client.get(url)
     assert response.status_code == 200
 
     customer_response = json.loads(response.content)
-    assert len(customer_response) == 3
+    assert len(customer_response) == 2
 
 
 def test_get_customer_by_id_rest_api(client, client_query, mock_customer_generator):
@@ -85,3 +62,12 @@ def test_get_customer_by_id_rest_api(client, client_query, mock_customer_generat
     customer_response = json.loads(response.content)
     assert int(customer_response["id"]) == customer_mock.id
     assert customer_response["firstName"] == "Michael"
+
+
+def test_try_to_get_nonexistent_customer_rest_api(client, client_query):
+    url = reverse('customer_by_id', args=[9999])
+    response = client.get(url)
+    assert response.status_code == 404
+
+    result = json.loads(response.content)
+    assert result["detail"] == "Não encontrado."

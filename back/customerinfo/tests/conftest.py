@@ -142,3 +142,47 @@ class GoogleGeocodeAPIResponse(Enum):
     }
 
     ZERO_RESULTS_STATUS = {"results": [], "status": "ZERO_RESULTS"}
+
+
+def populate_db_with_customers(quantity: int):
+    assert 0 < quantity <= 3, "Number of customers has to be an integer between 0 and 4"
+
+    for customer in range(0, quantity):
+        Customer(**customer_samples[customer]).save()
+
+
+customer_samples = [
+    {
+        "first_name": "Pam",
+        "last_name": "Beesly",
+        "email": "pamcasso@mifflin.com",
+        "gender": "Female",
+        "title": "Office Administrator",
+        "company": "Dunder Mifflin",
+        "city": "Scranton, Pennsylvania",
+        "latitude": "41.4091379",
+        "longitude": "-75.6624229",
+    },
+    {
+        "first_name": "Jim",
+        "last_name": "Halpert",
+        "email": "bigtuna@athlead.com",
+        "title": "President of New Acquisitions",
+        "gender": "Male",
+        "company": "Dunder Mifflin",
+        "city": "Scranton, Pennsylvania",
+        "latitude": "41.4091379",
+        "longitude": "-75.6624229",
+    },
+    {
+        "first_name": "Dwight",
+        "last_name": "Schrute",
+        "email": "schrutefarms@tripadvisor.com",
+        "title": "Assistant (to the) Regional Manager",
+        "gender": "Male",
+        "company": "Dunder Mifflin",
+        "city": "Scranton, Pennsylvania",
+        "latitude": "41.4091379",
+        "longitude": "-75.6624229",
+    },
+]
