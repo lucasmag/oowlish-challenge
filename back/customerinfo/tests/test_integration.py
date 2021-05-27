@@ -43,7 +43,7 @@ def test_try_to_get_nonexistent_customer_graphql_api(client_query):
 def test_get_all_customers_rest_api(client, client_query, mock_customer_generator):
     populate_db_with_customers(quantity=2)
 
-    url = reverse('customers')
+    url = reverse("customers")
     response = client.get(url)
     assert response.status_code == 200
 
@@ -55,7 +55,7 @@ def test_get_customer_by_id_rest_api(client, client_query, mock_customer_generat
     customer_mock = mock_customer_generator(first_name="Michael")
     customer_mock.save()
 
-    url = reverse('customer_by_id', args=[customer_mock.id])
+    url = reverse("customer_by_id", args=[customer_mock.id])
     response = client.get(url)
     assert response.status_code == 200
 
@@ -65,7 +65,7 @@ def test_get_customer_by_id_rest_api(client, client_query, mock_customer_generat
 
 
 def test_try_to_get_nonexistent_customer_rest_api(client, client_query):
-    url = reverse('customer_by_id', args=[9999])
+    url = reverse("customer_by_id", args=[9999])
     response = client.get(url)
     assert response.status_code == 404
 

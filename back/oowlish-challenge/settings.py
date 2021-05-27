@@ -46,15 +46,15 @@ INSTALLED_APPS = [
     "graphene_django",
     "corsheaders",
     "rest_framework",
-    'drf_yasg',
+    "drf_yasg",
 ]
 
 GRAPHENE = {"SCHEMA": "customerinfo.schema.schema"}
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
-        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+    "DEFAULT_RENDERER_CLASSES": (
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
     ),
 }
 
