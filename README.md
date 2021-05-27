@@ -52,9 +52,9 @@ $ docker-compose down
 > Note: To set up for development you can access each module (back/front) separately and follow the respective README.md instructions of each one.
 
 ## Usage
-There are two ways to retrieve customer information: using the *django rest framework* API or using the *GraphQL* API.
+There are two ways to retrieve customer information from the API: using the *Django Rest Framework* endpoints or using the *GraphQL* endpoint.
 
-Here, the frontend revolves around the GraphQL API, with two API calls: one to list all customers, and the other to search for a specific customer by its id.
+Here, the frontend revolves around the GraphQL endpoint, with two API calls: one to list all customers, and the other to search for a specific customer by its id.
 
 The main screen shows a table with the list of all customers, which were called through the first GraphQL query: `allCustomers`, that returns all customers present at the database, containing the following fields: *id*, *firstName*, *lastName*, *gender* and *city*.
 

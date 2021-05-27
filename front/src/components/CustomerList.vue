@@ -42,6 +42,9 @@
             :per-page="perPage"
             align="center"
         ></b-pagination>
+        <div class="footer-info">
+          <span> {{this.currentPageStart}} - {{this.currentPageEnd}} of {{this.totalCustomers}} customers</span>
+        </div>
       </div>
 
       <b-modal
@@ -97,6 +100,13 @@ export default {
     },
     noCustomers: function () {
       return this.totalCustomers === 0
+    },
+    currentPageStart: function () { return this.currentPage * this.perPage - this.perPage + 1 },
+    currentPageEnd: function () {
+      const end =  this.currentPage * this.perPage
+      if (end > this.totalCustomers)
+        return this.totalCustomers
+      return end
     }
   },
   methods: {
@@ -167,7 +177,7 @@ export default {
 .table-footer {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: 0.3fr 1fr 0.3fr;
+  grid-template-columns: 0.4fr 1fr 0.4fr;
   grid-template-rows: auto;
   grid-template-areas:
     "perpage pagination ."
@@ -208,6 +218,15 @@ export default {
   width: -moz-available;
   width: -webkit-fill-available;
   width: fill-available;
+}
+
+.footer-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: Montserrat-Regular, "sans-serif";
+  font-size: 1em;
+  color: #8a8a8a;
 }
 
 >>> .page-item.active .page-link{
