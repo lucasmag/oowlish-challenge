@@ -51,8 +51,10 @@ $ docker-compose down
 
 > Note: To set up for development you can access each module (back/front) separately and follow the respective README.md instructions of each one.
 
-## Usage ###
-The application revolves around two API calls: one to list all customers, and the other to search for a specific customer by its id.
+## Usage
+There are two ways to retrieve customer information: using the *django rest framework* API or using the *GraphQL* API.
+
+Here, the frontend revolves around the GraphQL API, with two API calls: one to list all customers, and the other to search for a specific customer by its id.
 
 The main screen shows a table with the list of all customers, which were called through the first GraphQL query: `allCustomers`, that returns all customers present at the database, containing the following fields: *id*, *firstName*, *lastName*, *gender* and *city*.
 
@@ -63,7 +65,21 @@ This information is queried through the GraphQL query `customer(id: Int)`, retur
 
 [![Customer info](https://github.com/lucasmag/oowlish-challenge/blob/master/front/src/assets/customer-info.png)](https://github.com/lucasmag/oowlish-challenge)
 
-The Django API also provides a GraphiQL endpoint to test the available queries for this application as well as see the docs for this schema. Just access in the browser:
+### Django Rest Framework
+This application provides the following endpoints for obtaining customer data through *Django Rest framework*:
+- Return all customers
+/customers
+
+- Get a customer by its Id
+/customers/<id>
+
+You can test these endpoints by using the *swagger* documentation, generated with *Django yasg*. Access in the browser:
+```
+http://localhost:8000/swagger/
+```
+
+### GraphQL
+The Django API also provides a *GraphiQL* endpoint to test the available queries for this application as well as see the docs for this schema. Just access in the browser:
 ```
 http://localhost:8000/graphql/graphiql/
 ```
@@ -90,7 +106,7 @@ This query should return something like this.
 ```
 The docs are available in the top right corner of the page.
 
-## How does it work? ###
+## How does it work?
 As previously mentioned, when running Docker Compose, three containers are created: one for the frontend (Vue.js), one for the backend (Django) and the last one for the database (PostgreSQL).
 
 The frontend and database steps for letting them in a ready-to-use state are quite simple. For front, the build is done by `npm` and then served by the HTTP `Nginx` server on port 80.
@@ -105,8 +121,8 @@ For the backend, there are a few more steps. These steps are described below:
     ```
 4. The server runs on port 8000
 
-## Tests ##
-### Pytest ###
+## Tests
+### Pytest
 This application uses the easy-to-use test framework [pytest](https://docs.pytest.org/en/6.2.x/) to run its tests.
 
 To run tests enter in the `django_server` container with the following command:
@@ -124,7 +140,7 @@ Was also made a runner adapter that allows us to run the tests using Django's `t
 $ python ./manage.py test
 ```
 
-### Coverage ###
+### Coverage
 There is also a tool to measure the code coverage of backend, which is [coverage](https://coverage.readthedocs.io/en/coverage-5.5/#). You can run tests with coverage running the following command:
 ```bash
 coverage run -m pytest
@@ -135,16 +151,18 @@ To print the report results:
 coverage report -m
 ```
 
-### Dependencies ###
+### Dependencies
 These are the main dependencies used in this project.
 
 #### Backend
 + [Python 3.8](https://www.python.org/)
 + [Django](https://www.djangoproject.com/)
 + [Graphene-Django](https://docs.graphene-python.org/projects/django/en/latest/)
++ [Django REST framework](https://www.django-rest-framework.org/)
 + [Pytest](https://docs.pytest.org/en/6.2.x/index.html)
 + [Coverage](https://coverage.readthedocs.io/en/coverage-5.5/#)
 + [Psycopg2](https://pypi.org/project/psycopg2/)
++ [drf-yasg](https://github.com/axnsan12/drf-yasg)
 + [Black](https://black.readthedocs.io/en/stable/)
 
 #### Frontend
